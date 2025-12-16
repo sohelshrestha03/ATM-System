@@ -185,6 +185,11 @@ class Register(QWidget):
 
         cur.execute('''INSERT INTO user(account_no,full_name,phone_no,email,new_pin,confirm_pin,balance) VALUES(?,?,?,?,?,?,?)'''
                     ,(acc,name,phone,email,hashed_np,hashed_cp,balance))
+
+        u_id=cur.lastrowid
+        cur.execute("INSERT INTO transactions(account_no,type,amount,user_id)VALUES(?,?,?,?)",
+                    (acc, "Initial Deposit", balance, u_id))
+
         conn.commit()
         conn.close()
 
@@ -193,9 +198,9 @@ class Register(QWidget):
 
     def clear_box(self):
         self.txt1.clear()
-        self.name_lbl.clear()
-        self.phone_lbl.clear()
-        self.email_lbl.clear()
+        self.name_txt.clear()
+        self.phone_txt.clear()
+        self.email_txt.clear()
         self.txt2.clear()
         self.txt3.clear()
         self.txt4.setValue(0)

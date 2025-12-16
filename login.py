@@ -106,14 +106,15 @@ class Login(QWidget):
 
         conn=sqlite3.connect("atm.db")
         cur=conn.cursor()
-        cur.execute('SELECT account_id,account_no,full_name FROM user WHERE account_no=? AND confirm_pin=?', (a, hashed_pin))
+        cur.execute('SELECT account_id,account_no,full_name,balance FROM user WHERE account_no=? AND confirm_pin=?', (a, hashed_pin))
         acc_holder=cur.fetchone()
         conn.close()
 
         if acc_holder:
-            account_id,account_no,full_name=acc_holder
+            account_id,account_no,full_name,balance=acc_holder
+            balance=float(balance)
             from main import MainWindow
-            self.main_app=MainWindow(account_id,account_no,full_name)
+            self.main_app=MainWindow(account_id,account_no,full_name,balance)
             self.main_app.show()
             self.close()
 

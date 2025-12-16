@@ -4,12 +4,14 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
 class Deposit(QWidget):
-    def __init__(self,account_id,account_no,full_name):
+    def __init__(self,account_id,account_no,full_name,balance):
         super().__init__()
         self.acc_id=account_id
         self.acc_no=account_no
         self.name=full_name
+        self.blc=balance
         self.set_ui()
+        self.setObjectName("mainwindow")
 
     def set_ui(self):
         self.setWindowTitle("Deposit Cash")
@@ -42,6 +44,10 @@ class Deposit(QWidget):
         f.addRow(g)
 
         self.setStyleSheet('''
+        QWidget#mainwindow{
+            background-color:#c1c1e1;
+        }
+        
         QLabel#head{
         font-family:Times New Roman;
         font-size:22px;
@@ -103,6 +109,7 @@ class Deposit(QWidget):
                 QMessageBox.critical(self,"Not Found","Account not found.")
                 return
 
+            cur.execute("INSERT INTO transactions(account_no,type,amount,user_id)VALUES(?,?,?,?)",(self.acc_no,"Deposit",amt,self.acc_id))
             conn.commit()
             conn.close()
 
@@ -115,7 +122,7 @@ class Deposit(QWidget):
 
     def cancel_it(self):
         from main import MainWindow
-        self.m=MainWindow(self.acc_id,self.acc_no,self.name)
+        self.m=MainWindow(self.acc_id,self.acc_no,self.name,self.blc)
         self.m.show()
         self.close()
 

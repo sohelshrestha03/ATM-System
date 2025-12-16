@@ -9,6 +9,7 @@ class ForgetPin(QWidget):
     def __init__(self):
         super().__init__()
         self.set_ui()
+        self.setObjectName("mainwindow")
 
     def set_ui(self):
         self.setWindowTitle("Forget Pin")
@@ -56,6 +57,10 @@ class ForgetPin(QWidget):
         self.linklbl.setAlignment(Qt.AlignHCenter)
 
         self.setStyleSheet('''
+         QWidget#mainwindow{
+         background-color:#c1c1e1;
+         }
+        
         QLabel#head{
         font-family:Times New Roman;
         font-size:22px;
